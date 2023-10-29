@@ -13,7 +13,7 @@ uint32_t find_pivot(std::vector<int>& vector, uint32_t start, uint32_t end) {
 
     uint32_t count = 0;
     for (int i = start + 1; i <= end; i++) {
-        if (vector[i] >= pivot)
+        if (vector[i] <= pivot)
             count++;
     }
 
@@ -39,13 +39,11 @@ uint32_t find_pivot(std::vector<int>& vector, uint32_t start, uint32_t end) {
     return pivot_index;
 }
 
-void quick_sort(std::vector<int>& vector, uint32_t start, uint32_t end) {
+void quick_sort(std::vector<int>& vector, int start, int end) {
     if(start >= end)
         return;
 
     uint32_t pivot = find_pivot(vector, start, end);
-
-    std::cout << pivot << '\n';
 
     quick_sort(vector, start, pivot - 1);
     quick_sort(vector, pivot + 1, end);
@@ -70,10 +68,11 @@ void bubble_sort(std::vector<int>& vector) {
 }
 
 int main() {
-    const uint8_t CHUNK_COUNT = 4;
+    const uint8_t CHUNK_COUNT = 10;
     const std::string CHUNK_FOLDER = "chunks";
 
     std::ifstream input("liczby.txt");
+
 
     std::fstream chunks[CHUNK_COUNT];
     std::fstream sorted_chunks[CHUNK_COUNT];
@@ -110,8 +109,8 @@ int main() {
             chunk.push_back(temp);
         }
 
-        // quick_sort(chunk, 0, chunk.size());
-        bubble_sort(chunk);
+        quick_sort(chunk, 0, chunk.size() - 1);
+        // bubble_sort(chunk);
 
         for(int num : chunk) {
             sorted_chunks[i] << num << '\n';
